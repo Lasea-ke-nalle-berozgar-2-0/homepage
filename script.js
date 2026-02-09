@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Sticky Nav
+    // 1. --- STICKY NAVIGATION ---
     const nav = document.getElementById('navbar');
     const header = document.querySelector('.branding-header');
     
@@ -12,70 +12,128 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Slider Logic
-    const hero = document.getElementById('hero');
-    const heroTitle = document.getElementById('hero-title');
+    // 2. --- ENHANCED AUTOMATIC SLIDESHOW ---
+    let slideIndex = 1;
+    let autoplayTimer;
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
     
-    const sliderData = [
-        { img: 'lady-anusuya-education-academy-jhalawar-city-jhalawar-schools-dtovd186o5.jpg', title: "Shaping Future Leaders" },
-        { img: 'WhatsApp Image 2026-02-08 at 11.44.57 AM.jpeg', title: "Excellence in Education" }
+    const SLIDE_INTERVAL = 4000;
+
+    function showSlides(n) {
+        const slidesList = document.querySelectorAll(".slide");
+        const dotsList = document.querySelectorAll(".dot");
+
+        if (n > slidesList.length) { slideIndex = 1; }
+        if (n < 1) { slideIndex = slidesList.length; }
+
+        slidesList.forEach(slide => slide.classList.remove("active"));
+        dotsList.forEach(dot => dot.classList.remove("active"));
+
+        if (slidesList.length > 0) {
+            slidesList[slideIndex - 1].classList.add("active");
+            dotsList[slideIndex - 1].classList.add("active");
+            
+            const counterSpan = document.getElementById('current-slide');
+            if (counterSpan) {
+                counterSpan.textContent = slideIndex;
+            }
+        }
+    }
+
+    function autoPlaySlides() {
+        slideIndex++;
+        showSlides(slideIndex);
+        autoplayTimer = setTimeout(autoPlaySlides, SLIDE_INTERVAL);
+    }
+
+    window.changeSlide = function(n) {
+        clearTimeout(autoplayTimer);
+        slideIndex += n;
+        showSlides(slideIndex);
+        autoplayTimer = setTimeout(autoPlaySlides, SLIDE_INTERVAL);
+    };
+
+    window.currentSlide = function(n) {
+        clearTimeout(autoplayTimer);
+        slideIndex = n;
+        showSlides(slideIndex);
+        autoplayTimer = setTimeout(autoPlaySlides, SLIDE_INTERVAL);
+    };
+
+    // Initialize slideshow
+    if (slides.length > 0) {
+        document.getElementById('total-slides').textContent = slides.length;
+        showSlides(slideIndex);
+        autoplayTimer = setTimeout(autoPlaySlides, SLIDE_INTERVAL);
+    }
+
+    // Pause on hover
+    const slideshowContainer = document.querySelector('.slideshow-container');
+    if (slideshowContainer) {
+        slideshowContainer.addEventListener('mouseenter', () => {
+            clearTimeout(autoplayTimer);
+        });
+
+        slideshowContainer.addEventListener('mouseleave', () => {
+            autoplayTimer = setTimeout(autoPlaySlides, SLIDE_INTERVAL);
+        });
+    }
+
+    // 3. --- DYNAMIC QUOTES ---
+    const computerQuotes = [
+        { text: "Everyone should learn how to program a computer, because it teaches you how to think.", author: "STEVE JOBS" },
+        { text: "Education is the most powerful weapon which you can use to change the world.", author: "NELSON MANDELA" },
+        { text: "The beautiful thing about learning is that no one can take it away from you.", author: "B.B. KING" }
     ];
 
-    let index = 0;
-    setInterval(() => {
-        index = (index + 1) % sliderData.length;
-        hero.style.backgroundImage = `linear-gradient(rgba(0,33,71,0.4), rgba(0,33,71,0.4)), url('${sliderData[index].img}')`;
-        heroTitle.textContent = sliderData[index].title;
-    }, 5000);
-    const computerQuotes = [
-    { text: "Everyone should learn how to program a computer, because it teaches you how to think.", author: "STEVE JOBS" },
-    { text: "Coding is today’s language of creativity.", author: "MARIA KLAWE" },
-    { text: "The best way to predict the future is to invent it.", author: "ALAN KAY" },
-    { text: "Computer science is no more about computers than astronomy is about telescopes.", author: "EDSGER DIJKSTRA" }
-];
+    let quoteIndex = 0;
+    const textDiv = document.getElementById('dynamic-quote');
+    const authorDiv = document.getElementById('dynamic-author');
 
-let quoteIndex = 0;
-const textDiv = document.getElementById('dynamic-quote');
-const authorDiv = document.getElementById('dynamic-author');
+    function fadeQuote() {
+        if (!textDiv || !authorDiv) return;
 
-function fadeQuote() {
-    // Start Fade Out
-    textDiv.style.opacity = 0;
-    authorDiv.style.opacity = 0;
+        textDiv.style.opacity = 0;
+        authorDiv.style.opacity = 0;
 
-    setTimeout(() => {
-        quoteIndex = (quoteIndex + 1) % computerQuotes.length;
-        
-        // Change Content
-        textDiv.textContent = computerQuotes[quoteIndex].text;
-        authorDiv.textContent = "— " + computerQuotes[quoteIndex].author;
+        setTimeout(() => {
+            quoteIndex = (quoteIndex + 1) % computerQuotes.length;
+            textDiv.textContent = computerQuotes[quoteIndex].text;
+            authorDiv.textContent = "— " + computerQuotes[quoteIndex].author;
 
-        // Start Fade In
-        textDiv.style.opacity = 1;
-        authorDiv.style.opacity = 1;
-    }, 800); // Matches the CSS transition time
-}
-// --- Smooth Scrolling for Navigation Links ---
-document.querySelectorAll('a[href^="C:\Users\tushar\Documents\VS CODE\HTML\New lasea\Contact-us-main\Contact us\index.html"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent default jump behavior
+            textDiv.style.opacity = 1;
+            authorDiv.style.opacity = 1;
+        }, 800); 
+    }
 
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
+    if (textDiv) setInterval(fadeQuote, 6000);
 
-        if (targetElement) {
-            // Adjust for fixed navbar height if necessary
-            const navHeight = document.getElementById('navbar').offsetHeight;
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+    // 4. --- SMOOTH SCROLLING ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            
+            if (targetId.startsWith("#") && targetId.length > 1) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
 
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth' // This creates the 'aesthetic' sliding feel
-            });
-        }
+                if (targetElement) {
+                    const navHeight = nav.offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
     });
-});
 
-// Set Interval for 6 seconds
-setInterval(fadeQuote, 6000);
+    // 5. --- KEYBOARD NAVIGATION ---
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') window.changeSlide(-1);
+        if (e.key === 'ArrowRight') window.changeSlide(1);
+    });
 });
