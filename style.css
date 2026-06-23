@@ -1,0 +1,638 @@
+/* ============================================================
+   LASEA — Lady Anusuya Singhania Educational Academy
+   style.css  |  Main Stylesheet
+   ============================================================ */
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #faf8f3;
+    color: #1e293b;
+    overflow-x: hidden;
+}
+
+::selection {
+    background: #1a3560;
+    color: #faf8f3;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #faf8f3; }
+::-webkit-scrollbar-thumb { background: #1a3560; border-radius: 3px; }
+
+/* ===== TYPOGRAPHY UTILITIES ===== */
+.font-display {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+.loader {
+    position: fixed;
+    inset: 0;
+    background: #1a3560;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-ring {
+    width: 80px;
+    height: 80px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-top-color: #c49a2a;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loader-logo-wrap {
+    position: absolute;
+    text-align: center;
+}
+
+.loader-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.4em;
+}
+
+.loader-sub {
+    font-size: 0.55rem;
+    color: #c49a2a;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+
+/* ============================================================
+   ANNOUNCEMENT BANNER
+   ============================================================ */
+.announcement-band {
+    background: linear-gradient(135deg, #1a3560, #111f3a);
+    padding: 10px 0;
+    overflow: hidden;
+}
+
+/* ===== MARQUEE ===== */
+.marquee-track {
+    display: flex;
+    gap: 0;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+#navbar {
+    transition: all 0.4s ease;
+}
+
+.nav-scrolled {
+    background: rgba(250, 248, 243, 0.96) !important;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 2px 30px rgba(26, 53, 96, 0.08);
+}
+
+.nav-scrolled .nav-link {
+    color: #1a3560 !important;
+}
+
+.nav-link {
+    position: relative;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #c49a2a;
+    transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.mobile-menu.active {
+    clip-path: inset(0 0 0% 0);
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero-bg {
+    background-image:
+        linear-gradient(135deg,
+            rgba(17, 31, 58, 0.92) 0%,
+            rgba(26, 53, 96, 0.78) 50%,
+            rgba(17, 31, 58, 0.88) 100%),
+        url('hero-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.hero-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.hero-scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, #c49a2a, transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50%       { opacity: 1;   transform: scaleY(1.1); }
+}
+
+/* ===== HERO STATS BAR ===== */
+.stat-pill {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-pill:hover {
+    background: rgba(196, 154, 42, 0.15);
+    border-color: rgba(196, 154, 42, 0.4);
+}
+
+/* Counter */
+.count-up {
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+    background: #1a3560;
+    color: #faf8f3;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #c49a2a, #e8c255);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-primary:hover::before { opacity: 1; }
+
+.btn-primary span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px -8px rgba(26, 53, 96, 0.4);
+    color: #1a3560;
+}
+
+.btn-gold {
+    background: #c49a2a;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background: #e8c255;
+    color: #1a3560;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px -8px rgba(196, 154, 42, 0.5);
+}
+
+.btn-outline-white {
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-white:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+
+/* ============================================================
+   DECORATIVE ELEMENTS
+   ============================================================ */
+
+/* Gold lines */
+.gold-line {
+    width: 50px;
+    height: 1.5px;
+    background: linear-gradient(to right, #c49a2a, #e8c255);
+}
+
+.gold-line-center {
+    width: 50px;
+    height: 1.5px;
+    background: linear-gradient(to right, #c49a2a, #e8c255);
+    margin: 0 auto;
+}
+
+/* Section label */
+.section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #c49a2a;
+}
+
+/* Giant quote mark */
+.quote-giant {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10rem;
+    line-height: 1;
+    color: rgba(196, 154, 42, 0.12);
+    position: absolute;
+    top: -30px;
+    left: -5px;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Program badge */
+.program-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: #c49a2a;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+}
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.school-card {
+    transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: 1px solid rgba(26, 53, 96, 0.07);
+}
+
+.school-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 25px 50px -15px rgba(26, 53, 96, 0.18);
+    border-color: rgba(196, 154, 42, 0.3);
+}
+
+/* Testimonial */
+.testimonial-card {
+    background: #fff;
+    border: 1px solid rgba(26, 53, 96, 0.07);
+    transition: all 0.4s ease;
+}
+
+.testimonial-card:hover {
+    border-color: rgba(196, 154, 42, 0.35);
+    box-shadow: 0 20px 45px -12px rgba(26, 53, 96, 0.12);
+    transform: translateY(-5px);
+}
+
+
+/* ============================================================
+   IMAGES
+   ============================================================ */
+.img-reveal {
+    overflow: hidden;
+}
+
+.img-reveal img {
+    transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.img-reveal:hover img {
+    transform: scale(1.06);
+}
+
+/* Decorative offset frame */
+.img-frame {
+    position: relative;
+}
+
+.img-frame::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    right: -24px;
+    bottom: -24px;
+    border: 1.5px solid #c49a2a;
+    z-index: -1;
+    transition: all 0.4s ease;
+}
+
+.img-frame:hover::before {
+    top: 12px;
+    left: 12px;
+    right: -12px;
+    bottom: -12px;
+}
+
+
+/* ============================================================
+   ABOUT STATS
+   ============================================================ */
+.about-stat {
+    position: relative;
+    padding: 1.75rem;
+    background: #fff;
+    border: 1px solid rgba(26, 53, 96, 0.07);
+    overflow: hidden;
+}
+
+.about-stat::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #c49a2a;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.about-stat:hover::after {
+    transform: scaleX(1);
+}
+
+
+/* ============================================================
+   TIMELINE (Facilities section)
+   ============================================================ */
+.timeline-item {
+    position: relative;
+    padding-left: 32px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    background: #c49a2a;
+    border-radius: 50%;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 20px;
+    width: 1px;
+    height: calc(100% + 16px);
+    background: linear-gradient(to bottom, #c49a2a 0%, transparent 100%);
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
+
+
+/* ============================================================
+   GALLERY
+   ============================================================ */
+.gallery-item {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.gallery-item img {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26, 53, 96, 0.7) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 16px;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+
+/* ============================================================
+   PROGRAM TABS
+   ============================================================ */
+.tab-btn {
+    transition: all 0.25s ease;
+}
+
+.tab-btn.active {
+    background: #1a3560;
+    color: #faf8f3;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: grid;
+}
+
+
+/* ============================================================
+   CONTACT FORM
+   ============================================================ */
+.form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-input:focus {
+    border-bottom-color: #c49a2a;
+}
+
+.form-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+/* ============================================================
+   BACK TO TOP
+   ============================================================ */
+#backToTop {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    background: #1a3560;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 999;
+    border: 1px solid rgba(196, 154, 42, 0.4);
+}
+
+#backToTop.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#backToTop:hover {
+    background: #c49a2a;
+    transform: translateY(-3px);
+}
+
+
+/* ============================================================
+   ANCHOR OFFSET FIX (for fixed nav)
+   ============================================================ */
+.section-anchor {
+    scroll-margin-top: 80px;
+}
+
+
+/* ============================================================
+   WAVE / SECTION DIVIDER
+   ============================================================ */
+.wave-divider {
+    overflow: hidden;
+    line-height: 0;
+}
+
+
+/* ============================================================
+   RESPONSIVE HELPERS
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track,
+    .hero-scroll-line,
+    .loader-ring {
+        animation: none;
+    }
+
+    .school-card,
+    .testimonial-card,
+    .img-reveal img,
+    .gallery-item img,
+    .btn-primary,
+    .btn-gold {
+        transition: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-bg {
+        background-attachment: scroll; /* parallax off on mobile for perf */
+    }
+
+    .img-frame::before {
+        display: none; /* too tight on small screens */
+    }
+
+    .quote-giant {
+        font-size: 6rem;
+    }
+}
